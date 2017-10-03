@@ -21,9 +21,8 @@ isNearInteger = function(x, eps=1e-12){
     if(is.integer(x) || all(abs(x - trunc(x)) < eps))
       TRUE else
         FALSE
-  } else {
+  } else
     FALSE
-  }
 
   ret
 }
