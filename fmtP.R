@@ -19,8 +19,8 @@ fmtP = function(pval, strict=TRUE){
     return(pval)
   }
 
-  #is strict is TRUE make sure 0 <= pval[i] <= 1, for all i in 1 to length(pval).
-  #otherwise, just issue warning.  Not sure why one'd want the strickt
+  #if strict is TRUE force 0 <= pval[i] <= 1, for all i in 1 to length(pval).
+  #otherwise, just issue warning.  Not sure why one'd want the strict
   #option, but maybe useful in certain situations where you don't want
   #code to error out?
   #only check non-missing values
@@ -31,16 +31,19 @@ fmtP = function(pval, strict=TRUE){
   }
 
 
-  ret = sapply(pval, FUN = function(x){
-    x_rnd = round(x,3)
-    if(x_rnd <= 0)
-      "< 0.001" else
-        if(x_rnd < 0.1)
-          sprintf("%.3f",x_rnd) else
-            if(x_rnd < 0.99)
-              sprintf("%0.2f",x_rnd) else
-                "> 0.99"
-  })
+  ret = vapply(
+    pval,
+    FUN = function(x){
+      x_rnd = round(x,3)
+      if(x_rnd <= 0)
+        "< 0.001" else
+          if(x_rnd < 0.1)
+            sprintf("%.3f",x_rnd) else
+              if(x_rnd < 0.99)
+                sprintf("%0.2f",x_rnd) else
+                  "> 0.99"
+    },
+    FUN.VALUE = character(1))
 
   ret
 }
